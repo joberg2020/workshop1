@@ -1,20 +1,32 @@
-import { Crypto } from './crypto.js';
+import { Crypto } from './crypto.js'
+import readline from 'readline/promises'
 
- const crypto = new Crypto()
- const result = crypto.encryptToBanditLanguage('Hej världen')
- console.log('Hej världen blir: ' + result)
 
- const decrypted = crypto.decryptFromBanditLanguage(result)
- console.log('Decrypted text: ' + decrypted)
+const crypto = new Crypto()
 
- const resultHard = crypto.encryptToBanditLanguage('rovdjursattack med hoovercraft')
- console.log('rovdjursattack med hoovercraft blir: ' + resultHard)
+async function readUserInput () {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
 
- const decryptedHard = crypto.decryptFromBanditLanguage(resultHard)
- console.log('Decrypted hard text: ' + decryptedHard)
+  const userInput = await rl.question('What do you want to do? \n 1. Encrypt message.\n 2. Decrypt message \n')
 
- const resultHard2 = crypto.encryptToBanditLanguage('vov, vovvov!')
- console.log('vov, vovvov!: ' + resultHard2)
+  if (userInput === '1') {
+    const messageToEncrypt = await rl.question('Input message to ecrypt: ')
 
- const decryptedHard2 = crypto.decryptFromBanditLanguage(resultHard2)
- console.log('Decrypted hard text: ' + decryptedHard2)
+    const result = crypto.encryptToBanditLanguage(messageToEncrypt)
+
+    rl.write('Your encrypted message: ' + result)
+  } else if (userInput === '2') {
+    const messageToDecrypt = await rl.question('Input message to decrypt: ')
+
+    const result = crypto.decryptFromBanditLanguage(messageToDecrypt)
+
+    rl.write('Your decrypted message: ' + result)
+  }
+
+  rl.close()
+}
+
+readUserInput()
