@@ -23,6 +23,12 @@ async function readUserInput () {
 
     const result = crypto.decryptFromBanditLanguage(messageToDecrypt)
 
+    if (result === 'Please enter a valid bandit language string') {
+      rl.write(result)
+      rl.close()
+      return
+    }
+
     rl.write('Your decrypted message: ' + result)
   }
 
